@@ -1,4 +1,6 @@
 numpy>=1.26
+SimpleITK>=2.3
+matplotlib>=3.8
 
 [testing]
 pytest>=7.4

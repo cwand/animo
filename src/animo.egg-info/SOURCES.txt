@@ -4,9 +4,12 @@ setup.py
 src/animo/__init__.py
 src/animo/__main__.py
 src/animo/common.py
+src/animo/image.py
+src/animo/plotter.py
 src/animo.egg-info/PKG-INFO
 src/animo.egg-info/SOURCES.txt
 src/animo.egg-info/dependency_links.txt
 src/animo.egg-info/requires.txt
 src/animo.egg-info/top_level.txt
 test/test_common.py
+test/test_image.py

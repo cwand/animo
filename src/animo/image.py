@@ -13,7 +13,7 @@ class ImageData:
         self.meta_data = meta_data
 
 
-def load_image_from_file(fp: str, tags: list[str] | None = None) -> ImageData:
+def load_image_series_from_file(fp: str, tags: list[str] | None = None) -> ImageData:
 
     reader = sitk.ImageSeriesReader()
     dicom_names = reader.GetGDCMSeriesFileNames(fp)
@@ -32,3 +32,9 @@ def load_image_from_file(fp: str, tags: list[str] | None = None) -> ImageData:
             raise ValueError("ANIMO: Invalid meta-data tag requested in LOAD_IMAGE_FROM_FILE")
 
     return ImageData(adata, mdata)
+
+
+def load_image_from_file(fp: str) -> ImageData:
+
+    adata = sitk.GetArrayFromImage(sitk.ReadImage(fp))
+    return ImageData(adata, {})

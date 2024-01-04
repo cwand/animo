@@ -1,5 +1,4 @@
 import animo
-import SimpleITK as SITK
 import numpy as np
 import os
 from datetime import datetime
@@ -7,14 +6,12 @@ from datetime import datetime
 
 def main():
 
-    a = animo.load_image_from_file(os.path.join('test', 'data', '8_3V'),
+    a = animo.load_image_series_from_file(os.path.join('test', 'data', '8_3V'),
                                    tags=['0008|0022', '0008|0032'])
 
+    y = animo.load_image_from_file(os.path.join('test', 'data', 'segs', 'Cyl101.nrrd'))
 
-
-    y = SITK.GetArrayFromImage(SITK.ReadImage(os.path.join('test', 'data', 'segs', 'Cyl101.nrrd')))
-    nvox = y.sum()
-
+    nvox = y.voxel_data.sum()
     nims = a.voxel_data.shape[0]
 
     t = np.zeros(nims)
@@ -30,18 +27,17 @@ def main():
         acqtime = datetime.fromisoformat(sd)
         if i == 0:
             early_time = acqtime
-            t[0] = 0.0
         else:
             t[i] = (acqtime-early_time).total_seconds()
 
-        masked = np.multiply(a.voxel_data[i], y)
+        masked = np.multiply(a.voxel_data[i], y.voxel_data)
         x[i] = np.sum(masked)/nvox
-
-    print(np.trapz(x, t))
 
     xy = animo.XYData(t, x)
     xy_wrap = animo.XYDataPlotWrapper(xy, 'kx-', '8.3V')
     animo.plot_xy([xy_wrap], out_file=None, xlabel='Time [s]', ylabel='Activity')
+
+    print(np.trapz(x, t))
 
 
 if __name__ == "__main__":

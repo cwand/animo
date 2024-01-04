@@ -1,7 +1,5 @@
 import numpy as np
 import numpy.typing as npt
-from typing import Any
-import animo
 
 # From common.py
 
@@ -22,7 +20,9 @@ class ImageData:
 
     def __init__(self, voxel_data: npt.NDArray[np.float64], meta_data: dict[str, list[str]]): ...
 
-def load_image_from_file(fp: str, tags: list[str] | None = ...) -> animo.ImageData : ...
+def load_image_series_from_file(fp: str, tags: list[str] | None = ...) -> ImageData : ...
+
+def load_image_from_file(fp: str) -> ImageData : ...
 
 
 # From plotter.py
@@ -36,3 +36,8 @@ class XYDataPlotWrapper:
     def __init__(self, data: XYData, linestyle: str, label: str): ...
 
 def plot_xy(xydata: list[XYDataPlotWrapper], out_file: str | None = ..., xlabel: str | None = ..., ylabel: str | None = ...) -> None: ...
+
+
+# From tac.py
+
+def extract_tac_from_01labelmap(image_series: ImageData, roi: ImageData) -> XYData: ...

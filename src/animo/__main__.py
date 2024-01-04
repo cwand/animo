@@ -1,22 +1,21 @@
 import animo
-import SimpleITK as sitk
+import SimpleITK as SITK
 import numpy as np
 import os
 from datetime import datetime
-import matplotlib.pyplot as plt
 
 
 def main():
 
-    reader = sitk.ImageSeriesReader()
+    reader = SITK.ImageSeriesReader()
     dicom_names = reader.GetGDCMSeriesFileNames(os.path.join('test', 'data', '8_3V'))
     reader.SetFileNames(dicom_names)
     reader.MetaDataDictionaryArrayUpdateOn()
 
-    a: sitk.Image = reader.Execute()
-    adata = sitk.GetArrayFromImage(a)
+    a: SITK.Image = reader.Execute()
+    adata = SITK.GetArrayFromImage(a)
 
-    y = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join('test', 'data', 'segs', 'Cyl101.nrrd')))
+    y = SITK.GetArrayFromImage(SITK.ReadImage(os.path.join('test', 'data', 'segs', 'Cyl101.nrrd')))
     nvox = y.sum()
 
     nims = a.GetSize()[3]
@@ -43,16 +42,9 @@ def main():
 
     print(np.trapz(x, t))
 
-    fig, ax = plt.subplots()
-    ax.plot(t, x, 'kx-')
-    plt.grid()
-    plt.xlabel("Time [s]")
-    plt.ylabel("Activity")
-    plt.show()
-
-
-
-
+    xy = animo.XYData(t, x)
+    xy_wrap = animo.XYDataPlotWrapper(xy, 'kx-', '8.3V')
+    animo.plot_xy([xy_wrap], out_file=None, xlabel='Time [s]', ylabel='Activity')
 
 
 if __name__ == "__main__":

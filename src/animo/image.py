@@ -2,6 +2,7 @@ import numpy as np
 import numpy.typing as npt
 import SimpleITK as sitk
 from datetime import datetime
+from typing import Optional
 
 
 class ImageData:
@@ -14,7 +15,7 @@ class ImageData:
         self.meta_data = meta_data
 
 
-def load_image_series_from_file(fp: str, tags: list[str] | None = None) -> ImageData:
+def load_image_series_from_file(fp: str, tags: Optional[list[str]] = None) -> ImageData:
 
     reader = sitk.ImageSeriesReader()
     dicom_names = reader.GetGDCMSeriesFileNames(fp)

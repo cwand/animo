@@ -1,12 +1,13 @@
 import matplotlib.pyplot as plt
 from animo import XYData
+from typing import Union, Optional
 
 
 class XYDataPlotWrapper:
 
     data: XYData
-    linestyle: str
-    label: str
+    linestyle: Union[str, None]
+    label: Union[str, None]
 
     def __init__(self, data: XYData, linestyle: str, label: str):
         self.data = data
@@ -14,8 +15,8 @@ class XYDataPlotWrapper:
         self.label = label
 
 
-def plot_xy(xydata: list[XYDataPlotWrapper], out_file: str | None = None,
-            xlabel: str | None = None, ylabel: str | None = None) -> None:
+def plot_xy(xydata: list[XYDataPlotWrapper], out_file: Optional[str] = None,
+            xlabel: Optional[str] = None, ylabel: Optional[str] = None) -> None:
     fig, ax = plt.subplots()
     for xy in xydata:
         ax.plot(xy.data.x, xy.data.y, xy.linestyle, label=xy.label)

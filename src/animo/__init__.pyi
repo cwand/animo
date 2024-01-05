@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.typing as npt
 from datetime import datetime
-from typing import OrderedDict, Any
+from typing import OrderedDict, Any, Optional, Union
 
 # From common.py
 
@@ -22,7 +22,7 @@ class ImageData:
 
     def __init__(self, voxel_data: npt.NDArray[np.float64], meta_data: dict[str, list[str]]): ...
 
-def load_image_series_from_file(fp: str, tags: list[str] | None = ...) -> ImageData : ...
+def load_image_series_from_file(fp: str, tags: Optional[list[str]] = ...) -> ImageData : ...
 
 def load_image_from_file(fp: str) -> ImageData : ...
 
@@ -34,12 +34,13 @@ def get_acq_datetime(image: ImageData) -> list[datetime] : ...
 class XYDataPlotWrapper:
 
     data: XYData
-    linestyle: str | None
-    label: str | None
+    linestyle: Union[str, None]
+    label: Union[str, None]
 
     def __init__(self, data: XYData, linestyle: str, label: str): ...
 
-def plot_xy(xydata: list[XYDataPlotWrapper], out_file: str | None = ..., xlabel: str | None = ..., ylabel: str | None = ...) -> None: ...
+def plot_xy(xydata: list[XYDataPlotWrapper], out_file: Optional[str] = ...,
+            xlabel: Optional[str] = ..., ylabel: Optional[str] = ...) -> None: ...
 
 
 # From tac.py

@@ -8,7 +8,7 @@ from datetime import datetime
 class TestImageData(unittest.TestCase):
 
     def test_init(self):
-        id = animo.ImageData(np.array([[0.0, 1.0], [1.5, 2.0]]), {'key1': ['X'], 'key2': [2]})
+        id = animo.ImageData(np.array([[0.0, 1.0], [1.5, 2.0]]), {'key1': ['X'], 'key2': ['2']})
         self.assertEqual(id.voxel_data.shape, (2, 2))
         self.assertEqual(id.voxel_data[0, 0], 0.0)
         self.assertEqual(id.voxel_data[0, 1], 1.0)
@@ -34,8 +34,8 @@ class TestLoadImageSeriesFromFile(unittest.TestCase):
         self.assertEqual(id.meta_data, {'0008|0022': ['20230621']})
 
     def test_load_single_image_9_slice_2_meta(self):
-        id = animo.load_image_series_from_file(os.path.join('test', 'data', '8_3V'),
-                                        ['0008|0022', '0008|0032'])
+        id = animo.load_image_series_from_file(
+            os.path.join('test', 'data', '8_3V'), ['0008|0022', '0008|0032'])
         self.assertEqual(id.voxel_data.shape, (9, 64, 128, 128))
         self.assertEqual(id.meta_data, {'0008|0022': ['20231201', '20231201', '20231201',
                                                       '20231201', '20231201', '20231201',

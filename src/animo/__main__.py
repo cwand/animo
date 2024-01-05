@@ -1,44 +1,44 @@
+import sys
 import animo
-import numpy as np
-import os
-from datetime import datetime
+from typing import Any
+import xmltodict
 
 
-def main():
+def main(argv: list[str]):
 
+    print("ANIMO STARTED")
+
+    task_types = {
+        'ImageSeriesLoad': animo.image_series_loader,
+        'ImageLoad': animo.image_loader,
+        'TAC': animo.tac_from_labelmap,
+        'PlotXY': animo.xyplotter
+    }
+
+    named_obj: dict[str, Any] = {}
+
+    # Parse XML input file
+    if len(argv) != 1:
+        exit("Missing command line argument: path to an XML file.")
+    xml_file = open(argv[0], "r")
+    task_tree = xmltodict.parse(xml_file.read(), force_list=('task', 'data'))
+    root = task_tree['animo']
+
+    for task in root['task']:
+        task_types[task['@type']](task, named_obj)
+
+    print("ANIMO ENDED")
+
+    '''
     a = animo.load_image_series_from_file(os.path.join('test', 'data', '8_3V'),
                                    tags=['0008|0022', '0008|0032'])
 
     y = animo.load_image_from_file(os.path.join('test', 'data', 'segs', 'Cyl101.nrrd'))
 
-    nvox = y.voxel_data.sum()
-    nims = a.voxel_data.shape[0]
-
-    t = np.zeros(nims)
-    x = np.zeros(nims)
-
-    for i in range(nims):
-
-        acq_time_tag = a.meta_data['0008|0032'][i]
-        acq_date_tag = a.meta_data['0008|0022'][i]
-        sd = (acq_date_tag[:4] + "-" + acq_date_tag[4:6] + "-" + acq_date_tag[6:] + " " +
-              acq_time_tag[:2] + ":" + acq_time_tag[2:4] + ":" + acq_time_tag[4:6] + "." +
-              acq_time_tag[-1] + "00")
-        acqtime = datetime.fromisoformat(sd)
-        if i == 0:
-            early_time = acqtime
-        else:
-            t[i] = (acqtime-early_time).total_seconds()
-
-        masked = np.multiply(a.voxel_data[i], y.voxel_data)
-        x[i] = np.sum(masked)/nvox
-
-    xy = animo.XYData(t, x)
+    xy = animo.extract_tac_from_01labelmap(a, y)
     xy_wrap = animo.XYDataPlotWrapper(xy, 'kx-', '8.3V')
-    animo.plot_xy([xy_wrap], out_file=None, xlabel='Time [s]', ylabel='Activity')
-
-    print(np.trapz(x, t))
+    animo.plot_xy([xy_wrap], out_file=None, xlabel='Time [s]', ylabel='Activity') '''
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

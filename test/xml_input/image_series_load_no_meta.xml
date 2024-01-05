@@ -1,0 +1,6 @@
+<animo>
+    <task type="ImageSeriesLoad">
+        <path>test/data/8_3V/</path>
+        <result_name>8_3V</result_name>
+    </task>
+</animo>

@@ -1,0 +1,6 @@
+<animo>
+    <task type="ImageLoad">
+        <path>test/data/segs/Cyl101.nrrd</path>
+        <result_name>Cyl101</result_name>
+    </task>
+</animo>

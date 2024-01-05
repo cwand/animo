@@ -1,0 +1,27 @@
+<animo>
+    <task type="ImageSeriesLoad">
+        <path>test/data/8_3V/</path>
+        <meta>0008|0022,0008|0032</meta>
+        <result_name>8_3V</result_name>
+    </task>
+    <task type="ImageLoad">
+        <path>test/data/segs/Cyl101.nrrd</path>
+        <result_name>Cyl101</result_name>
+    </task>
+    <task type="TAC">
+        <image_series>8_3V</image_series>
+        <roi>Cyl101</roi>
+        <result_name>8_3V_TAC</result_name>
+    </task>
+    <task type="PlotXY">
+        <dataset>
+            <data>
+                <name>8_3V_TAC</name>
+                <style>kx-</style>
+                <label>8.3V</label>
+            </data>
+        </dataset>
+        <xlabel>Time [s]</xlabel>
+        <ylabel>Activity</ylabel>
+    </task>
+</animo>

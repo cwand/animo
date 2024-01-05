@@ -1,6 +1,7 @@
 import numpy as np
 import numpy.typing as npt
 from datetime import datetime
+from typing import OrderedDict, Any
 
 # From common.py
 
@@ -44,3 +45,14 @@ def plot_xy(xydata: list[XYDataPlotWrapper], out_file: str | None = ..., xlabel:
 # From tac.py
 
 def extract_tac_from_01labelmap(image_series: ImageData, roi: ImageData) -> XYData: ...
+
+
+# From tasks.py
+
+def image_series_loader(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None: ...
+
+def image_loader(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None: ...
+
+def tac_from_labelmap(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None: ...
+
+def xyplotter(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None: ...

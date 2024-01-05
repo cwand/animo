@@ -6,8 +6,8 @@ import os
 class TestExtractTACFrom01Labelmap(unittest.TestCase):
 
     def test_extract(self):
-        image = animo.load_image_series_from_file(os.path.join('test', 'data', '8_3V'),
-                                               ['0008|0022', '0008|0032'])
+        image = animo.load_image_series_from_file(
+            os.path.join('test', 'data', '8_3V'), ['0008|0022', '0008|0032'])
         roi = animo.load_image_from_file(os.path.join('test', 'data', 'segs', 'Cyl101.nrrd'))
         tac = animo.extract_tac_from_01labelmap(image, roi)
         self.assertEqual(tac.x.shape, (9,))

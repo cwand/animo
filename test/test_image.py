@@ -16,7 +16,7 @@ class TestImageData(unittest.TestCase):
         self.assertEqual(id.voxel_data[1, 1], 2.0)
         self.assertEqual(len(id.meta_data.keys()), 2)
         self.assertEqual(id.meta_data['key1'], ['X'])
-        self.assertEqual(id.meta_data['key2'], [2])
+        self.assertEqual(id.meta_data['key2'], ['2'])
 
 
 class TestLoadImageSeriesFromFile(unittest.TestCase):

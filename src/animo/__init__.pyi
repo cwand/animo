@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.typing as npt
+from datetime import datetime
 
 # From common.py
 
@@ -23,6 +24,8 @@ class ImageData:
 def load_image_series_from_file(fp: str, tags: list[str] | None = ...) -> ImageData : ...
 
 def load_image_from_file(fp: str) -> ImageData : ...
+
+def get_acq_datetime(image: ImageData) -> list[datetime] : ...
 
 
 # From plotter.py

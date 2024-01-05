@@ -2,6 +2,7 @@ import unittest
 import animo
 import numpy as np
 import os
+from datetime import datetime
 
 
 class TestImageData(unittest.TestCase):
@@ -56,3 +57,42 @@ class TestLoadImageFromFile(unittest.TestCase):
         self.assertEqual(id.voxel_data.shape, (64, 128, 128))
         self.assertEqual(np.sum(id.voxel_data), 1701)
         self.assertEqual(id.meta_data, {})
+
+
+class TestGetAcqDatetime(unittest.TestCase):
+
+    def test_acq_date_time_1_image(self):
+        x = animo.load_image_series_from_file(os.path.join('test', 'data', 'nema'),
+                                              tags=['0008|0022', '0008|0032'])
+        ds = animo.get_acq_datetime(x)
+        self.assertEqual(len(ds), 1)
+        self.assertEqual(ds[0], datetime(2023, 6, 21, 10, 51, 44, 0))
+
+    def test_acq_date_time_9_images(self):
+        x = animo.load_image_series_from_file(os.path.join('test', 'data', '8_3V'),
+                                              tags=['0008|0022', '0008|0032'])
+        ds = animo.get_acq_datetime(x)
+        self.assertEqual(len(ds), 9)
+        self.assertEqual(ds[0], datetime(2023, 12, 1, 13, 30, 28, 0))
+        self.assertEqual(ds[1], datetime(2023, 12, 1, 13, 30, 31, 0))
+        self.assertEqual(ds[2], datetime(2023, 12, 1, 13, 30, 34, 300000))
+        self.assertEqual(ds[3], datetime(2023, 12, 1, 13, 30, 37, 500000))
+        self.assertEqual(ds[4], datetime(2023, 12, 1, 13, 30, 40, 800000))
+        self.assertEqual(ds[5], datetime(2023, 12, 1, 13, 30, 44, 0))
+        self.assertEqual(ds[6], datetime(2023, 12, 1, 13, 30, 47, 300000))
+        self.assertEqual(ds[7], datetime(2023, 12, 1, 13, 30, 50, 500000))
+        self.assertEqual(ds[8], datetime(2023, 12, 1, 13, 30, 53, 800000))
+
+    def test_acq_date_time_missing_meta_22(self):
+        x = animo.load_image_series_from_file(os.path.join('test', 'data', 'nema'),
+                                              tags=['0008|0021', '0008|0032'])
+        self.assertRaises(KeyError, animo.get_acq_datetime, x)
+
+    def test_acq_date_time_missing_meta_32(self):
+        x = animo.load_image_series_from_file(os.path.join('test', 'data', 'nema'),
+                                              tags=['0008|0022', '0008|0031'])
+        self.assertRaises(KeyError, animo.get_acq_datetime, x)
+
+    def test_acq_date_time_missing_meta(self):
+        x = animo.load_image_series_from_file(os.path.join('test', 'data', 'nema'))
+        self.assertRaises(KeyError, animo.get_acq_datetime, x)

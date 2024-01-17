@@ -16,10 +16,13 @@ class XYDataPlotWrapper:
 
 
 def plot_xy(xydata: list[XYDataPlotWrapper], out_file: Optional[str] = None,
-            xlabel: Optional[str] = None, ylabel: Optional[str] = None) -> None:
+            xlabel: Optional[str] = None, ylabel: Optional[str] = None,
+            ylim_low: Optional[float] = None) -> None:
     fig, ax = plt.subplots()
     for xy in xydata:
         ax.plot(xy.data.x, xy.data.y, xy.linestyle, label=xy.label)
+    if ylim_low is not None:
+        ax.set_ylim(bottom=ylim_low)
     plt.grid()
     if xlabel is not None:
         plt.xlabel(xlabel)

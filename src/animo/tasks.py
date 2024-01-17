@@ -53,8 +53,12 @@ def xyplotter(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
 
     xlabel = task['xlabel']
     ylabel = task['ylabel']
+    ylim = None
+    if 'ylim_low' in task:
+        ylim = float(task['ylim_low'])
+
     out_file = None
     if 'out_file' in task:
         out_file = task['out_file']
-    animo.plot_xy(plot_list, out_file=out_file, xlabel=xlabel, ylabel=ylabel)
+    animo.plot_xy(plot_list, out_file=out_file, xlabel=xlabel, ylabel=ylabel, ylim_low=ylim)
     print("")

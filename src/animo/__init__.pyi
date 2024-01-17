@@ -40,7 +40,8 @@ class XYDataPlotWrapper:
     def __init__(self, data: XYData, linestyle: str, label: str): ...
 
 def plot_xy(xydata: list[XYDataPlotWrapper], out_file: Optional[str] = ...,
-            xlabel: Optional[str] = ..., ylabel: Optional[str] = ...) -> None: ...
+            xlabel: Optional[str] = ..., ylabel: Optional[str] = ...,
+			ylim_low: Optional[float] = ...) -> None: ...
 
 
 # From tac.py

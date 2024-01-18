@@ -83,3 +83,86 @@ class TestTACFromLabelmap(unittest.TestCase):
         self.assertAlmostEqual(float(tac.y[6]), 731450.412, 0)
         self.assertAlmostEqual(float(tac.y[7]), 1653.982659, 3)
         self.assertAlmostEqual(float(tac.y[8]), 66.6683136, 4)
+
+
+class TestIntXY(unittest.TestCase):
+
+    def test_int_0(self):
+        f = open(os.path.join('test', 'xml_input', 'intxy.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        xy = animo.XYData(np.array([0.0, 1.0]), np.array([0.0, 0.0]))
+        no: dict[str, Any] = {'XY': xy}
+        animo.int_xy(task, no)
+        self.assertIsInstance(no['intXY'], float)
+        self.assertEqual(no['intXY'], 0.0)
+
+    def test_int_triangle(self):
+        f = open(os.path.join('test', 'xml_input', 'intxy.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        xy = animo.XYData(np.array([0.0, 1.0, 2.0, 3.0, 4.0]), np.array([0.0, 0.0, 1.0, 0.0, 0.0]))
+        no: dict[str, Any] = {'XY': xy}
+        animo.int_xy(task, no)
+        self.assertIsInstance(no['intXY'], float)
+        self.assertEqual(no['intXY'], 1.0)
+
+
+class TestAvgXY(unittest.TestCase):
+
+    def test_avg_0(self):
+        f = open(os.path.join('test', 'xml_input', 'avgxy.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        xy = animo.XYData(np.array([0.0, 1.0]), np.array([0.0, 0.0]))
+        no: dict[str, Any] = {'XY': xy}
+        animo.avg_xy(task, no)
+        self.assertIsInstance(no['avgXY'], float)
+        self.assertEqual(no['avgXY'], 0.0)
+
+    def test_avg_triangle(self):
+        f = open(os.path.join('test', 'xml_input', 'avgxy.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        xy = animo.XYData(np.array([0.0, 1.0, 2.0, 3.0, 4.0]), np.array([0.0, 0.0, 1.0, 0.0, 0.0]))
+        no: dict[str, Any] = {'XY': xy}
+        animo.avg_xy(task, no)
+        self.assertIsInstance(no['avgXY'], float)
+        self.assertEqual(no['avgXY'], 0.25)
+
+    def test_avg_shift_triangle(self):
+        f = open(os.path.join('test', 'xml_input', 'avgxy.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        xy = animo.XYData(np.array([1.0, 2.0, 3.0, 4.0, 5.0]), np.array([0.0, 0.0, 1.0, 0.0, 0.0]))
+        no: dict[str, Any] = {'XY': xy}
+        animo.avg_xy(task, no)
+        self.assertIsInstance(no['avgXY'], float)
+        self.assertEqual(no['avgXY'], 0.25)
+
+
+class TestMultiply(unittest.TestCase):
+
+    def test_multiply(self):
+        f = open(os.path.join('test', 'xml_input', 'multiply.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        print(task)
+        no: dict[str, Any] = {'A': 1.0, 'B': 10}
+        animo.multiply(task, no)
+        self.assertIsInstance(no['product'], float)
+        self.assertEqual(no['product'], -10.0)
+
+    def test_multiply_missing_value(self):
+        f = open(os.path.join('test', 'xml_input', 'multiply.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        no: dict[str, Any] = {'A': 1.0}
+        self.assertRaises(ValueError, animo.multiply, task, no)
+
+    def test_multiply_wrong_value(self):
+        f = open(os.path.join('test', 'xml_input', 'multiply.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        no: dict[str, Any] = {'A': 1.0, 'B': '14'}
+        self.assertRaises(TypeError, animo.multiply, task, no)

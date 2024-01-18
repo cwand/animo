@@ -1,0 +1,11 @@
+<animo>
+    <task type="Multiply">
+        <factors>
+            <factor>2.0</factor>
+            <factor>-0.5</factor>
+            <factor>A</factor>
+            <factor>B</factor>
+        </factors>
+        <result_name>product</result_name>
+    </task>
+</animo>

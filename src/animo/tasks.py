@@ -1,4 +1,5 @@
 from typing import OrderedDict, Any
+import numpy as np
 import animo
 
 
@@ -34,6 +35,43 @@ def tac_from_labelmap(task: OrderedDict[str, Any], named_obj: dict[str, Any]) ->
     result_name = task['result_name']
     named_obj[result_name] = animo.extract_tac_from_01labelmap(
         named_obj[image_series], named_obj[roi])
+    print("")
+
+
+def int_xy(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
+    print("TASK: INTEGRATE XY-DATA")
+    print(task)
+    xydata : animo.XYData = named_obj[task['xydata']]
+    result_name = task['result_name']
+    named_obj[result_name] = np.trapz(xydata.y, xydata.x)
+    print("")
+
+
+def avg_xy(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
+    print("TASK: AVERAGE XY-DATA")
+    print(task)
+    xydata: animo.XYData = named_obj[task['xydata']]
+    result_name = task['result_name']
+    named_obj[result_name] = np.trapz(xydata.y, xydata.x)/(xydata.x[-1]-xydata.x[0])
+    print("")
+
+
+def multiply(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
+    print("TASK: CALCULATE PRODUCT")
+    print(task)
+
+    product = 1.0
+    factors: OrderedDict[str, Any] = task['factors']
+
+    for factor in factors['factor']:
+        if factor in named_obj:
+            product = product * named_obj[factor]
+        else:
+            product = product * float(factor)
+
+    result_name = task['result_name']
+    named_obj[result_name] = product
+
     print("")
 
 

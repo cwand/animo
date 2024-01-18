@@ -12,6 +12,9 @@ def main(argv: list[str]):
         'ImageSeriesLoad': animo.image_series_loader,
         'ImageLoad': animo.image_loader,
         'TAC': animo.tac_from_labelmap,
+        'IntXY': animo.int_xy,
+        'AvgXY': animo.avg_xy,
+        'Multiply': animo.multiply,
         'PlotXY': animo.xyplotter
     }
 
@@ -28,16 +31,6 @@ def main(argv: list[str]):
         task_types[task['@type']](task, named_obj)
 
     print("ANIMO ENDED")
-
-    '''
-    a = animo.load_image_series_from_file(os.path.join('test', 'data', '8_3V'),
-                                   tags=['0008|0022', '0008|0032'])
-
-    y = animo.load_image_from_file(os.path.join('test', 'data', 'segs', 'Cyl101.nrrd'))
-
-    xy = animo.extract_tac_from_01labelmap(a, y)
-    xy_wrap = animo.XYDataPlotWrapper(xy, 'kx-', '8.3V')
-    animo.plot_xy([xy_wrap], out_file=None, xlabel='Time [s]', ylabel='Activity') '''
 
 
 if __name__ == "__main__":

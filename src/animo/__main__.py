@@ -15,6 +15,7 @@ def main(argv: list[str]):
         'IntXY': animo.int_xy,
         'AvgXY': animo.avg_xy,
         'Multiply': animo.multiply,
+        'ToXYData': animo.to_xydata,
         'PlotXY': animo.xyplotter
     }
 

@@ -147,7 +147,6 @@ class TestMultiply(unittest.TestCase):
         f = open(os.path.join('test', 'xml_input', 'multiply.xml'))
         tree = xmltodict.parse(f.read(), xml_attribs=True)
         task = tree['animo']['task']
-        print(task)
         no: dict[str, Any] = {'A': 1.0, 'B': 10}
         animo.multiply(task, no)
         self.assertIsInstance(no['product'], float)
@@ -166,3 +165,61 @@ class TestMultiply(unittest.TestCase):
         task = tree['animo']['task']
         no: dict[str, Any] = {'A': 1.0, 'B': '14'}
         self.assertRaises(TypeError, animo.multiply, task, no)
+
+
+class TestToXYData(unittest.TestCase):
+
+    def test_new_array(self):
+        f = open(os.path.join('test', 'xml_input', 'to_xydata.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        no: dict[str, Any] = {'A': 3, 'B': 1.0, 'C': 0.0, 'D': 2.0}
+        animo.to_xydata(task, no)
+        self.assertIsInstance(no['xydata'], animo.XYData)
+        xy: animo.XYData = no['xydata']
+        self.assertEqual(xy.x.shape, (4,))
+        self.assertEqual(xy.x[0], 0.0)
+        self.assertEqual(xy.x[1], 1.0)
+        self.assertEqual(xy.x[2], 3.0)
+        self.assertEqual(xy.x[3], 5.0)
+        self.assertEqual(xy.y.shape, (4,))
+        self.assertEqual(xy.y[0], 1.0)
+        self.assertEqual(xy.y[1], 2.0)
+        self.assertEqual(xy.y[2], -0.5)
+        self.assertEqual(xy.y[3], 42.0)
+
+    def test_append_array(self):
+        f = open(os.path.join('test', 'xml_input', 'to_xydata.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        no: dict[str, Any] = {'A': 3, 'B': 1.0, 'C': 0.0, 'D': 2.0,
+                              'xydata': animo.XYData(np.array([-1.0]), np.array([-2.0]))}
+        animo.to_xydata(task, no)
+        self.assertIsInstance(no['xydata'], animo.XYData)
+        xy: animo.XYData = no['xydata']
+        self.assertEqual(xy.x.shape, (5,))
+        self.assertEqual(xy.x[0], -1.0)
+        self.assertEqual(xy.x[1], 0.0)
+        self.assertEqual(xy.x[2], 1.0)
+        self.assertEqual(xy.x[3], 3.0)
+        self.assertEqual(xy.x[4], 5.0)
+        self.assertEqual(xy.y.shape, (5,))
+        self.assertEqual(xy.y[0], -2.0)
+        self.assertEqual(xy.y[1], 1.0)
+        self.assertEqual(xy.y[2], 2.0)
+        self.assertEqual(xy.y[3], -0.5)
+        self.assertEqual(xy.y[4], 42.0)
+
+    def test_missing_value(self):
+        f = open(os.path.join('test', 'xml_input', 'to_xydata.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        no: dict[str, Any] = {'B': 1.0, 'C': 0.0, 'D': 2.0}
+        self.assertRaises(ValueError, animo.to_xydata, task, no)
+
+    def test_unequal_size(self):
+        f = open(os.path.join('test', 'xml_input', 'to_xydata_missing.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        no: dict[str, Any] = {'A': 0.0, 'B': 1.0, 'C': 0.0, 'D': 2.0}
+        self.assertRaises(ValueError, animo.to_xydata, task, no)

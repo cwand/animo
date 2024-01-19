@@ -14,9 +14,9 @@ def main(argv: list[str]):
         'TAC': animo.tac_from_labelmap,
         'IntXY': animo.int_xy,
         'AvgXY': animo.avg_xy,
-        'Multiply': animo.multiply,
+        'Eval': animo.eval_expr,
         'ToXYData': animo.to_xydata,
-        'PlotXY': animo.xyplotter
+        'PlotXY': animo.xyplotter,
     }
 
     named_obj: dict[str, Any] = {}

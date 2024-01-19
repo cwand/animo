@@ -141,30 +141,16 @@ class TestAvgXY(unittest.TestCase):
         self.assertEqual(no['avgXY'], 0.25)
 
 
-class TestMultiply(unittest.TestCase):
+class TestEval(unittest.TestCase):
 
-    def test_multiply(self):
-        f = open(os.path.join('test', 'xml_input', 'multiply.xml'))
+    def test_eval_simple(self):
+        f = open(os.path.join('test', 'xml_input', 'eval.xml'))
         tree = xmltodict.parse(f.read(), xml_attribs=True)
         task = tree['animo']['task']
-        no: dict[str, Any] = {'A': 1.0, 'B': 10}
-        animo.multiply(task, no)
-        self.assertIsInstance(no['product'], float)
-        self.assertEqual(no['product'], -10.0)
-
-    def test_multiply_missing_value(self):
-        f = open(os.path.join('test', 'xml_input', 'multiply.xml'))
-        tree = xmltodict.parse(f.read(), xml_attribs=True)
-        task = tree['animo']['task']
-        no: dict[str, Any] = {'A': 1.0}
-        self.assertRaises(ValueError, animo.multiply, task, no)
-
-    def test_multiply_wrong_value(self):
-        f = open(os.path.join('test', 'xml_input', 'multiply.xml'))
-        tree = xmltodict.parse(f.read(), xml_attribs=True)
-        task = tree['animo']['task']
-        no: dict[str, Any] = {'A': 1.0, 'B': '14'}
-        self.assertRaises(TypeError, animo.multiply, task, no)
+        no: dict[str, Any] = {'A': 3.0, 'B': 1.5, 'C': -7.5, }
+        animo.eval_expr(task, no)
+        self.assertIsInstance(no['D'], float)
+        self.assertEqual(no['D'], 0.5)
 
 
 class TestToXYData(unittest.TestCase):

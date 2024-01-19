@@ -56,21 +56,14 @@ def avg_xy(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
     print("")
 
 
-def multiply(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
-    print("TASK: CALCULATE PRODUCT")
+def eval_expr(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
+    print("TASK: EVALUATE EXPRESSION")
     print(task)
 
-    product = 1.0
-    factors: OrderedDict[str, Any] = task['factors']
-
-    for factor in factors['factor']:
-        if factor in named_obj:
-            product = product * named_obj[factor]
-        else:
-            product = product * float(factor)
+    res = eval(task['expression'], named_obj)
 
     result_name = task['result_name']
-    named_obj[result_name] = product
+    named_obj[result_name] = res
 
     print("")
 
@@ -127,12 +120,16 @@ def xyplotter(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
 
     xlabel = task['xlabel']
     ylabel = task['ylabel']
-    ylim = None
+    ylim_low = None
     if 'ylim_low' in task:
-        ylim = float(task['ylim_low'])
+        ylim_low = float(task['ylim_low'])
+    ylim_high = None
+    if 'ylim_high' in task:
+        ylim_high = float(task['ylim_high'])
 
     out_file = None
     if 'out_file' in task:
         out_file = task['out_file']
-    animo.plot_xy(plot_list, out_file=out_file, xlabel=xlabel, ylabel=ylabel, ylim_low=ylim)
+    animo.plot_xy(plot_list, out_file=out_file, xlabel=xlabel, ylabel=ylabel,
+                  ylim_low=ylim_low, ylim_high=ylim_high)
     print("")

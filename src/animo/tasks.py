@@ -1,6 +1,7 @@
 from typing import OrderedDict, Any
 import numpy as np
 import animo
+import math
 
 
 def image_series_loader(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
@@ -60,7 +61,7 @@ def eval_expr(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
     print("TASK: EVALUATE EXPRESSION")
     print(task)
 
-    res = eval(task['expression'], named_obj)
+    res = eval(task['expression'], {'math': math}, named_obj)
 
     result_name = task['result_name']
     named_obj[result_name] = res

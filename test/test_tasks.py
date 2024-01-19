@@ -152,6 +152,15 @@ class TestEval(unittest.TestCase):
         self.assertIsInstance(no['D'], float)
         self.assertEqual(no['D'], 0.5)
 
+    def test_eval_exp(self):
+        f = open(os.path.join('test', 'xml_input', 'eval2.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        no: dict[str, Any] = {'A': 300, 'B': 4000, }
+        animo.eval_expr(task, no)
+        self.assertIsInstance(no['C'], float)
+        self.assertAlmostEqual(no['C'], 341.0396, places=4)
+
 
 class TestToXYData(unittest.TestCase):
 

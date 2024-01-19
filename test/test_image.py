@@ -18,6 +18,32 @@ class TestImageData(unittest.TestCase):
         self.assertEqual(id.meta_data['key1'], ['X'])
         self.assertEqual(id.meta_data['key2'], ['2'])
 
+    def test_decay_correction(self):
+        id1 = animo.ImageData(
+            np.array([[10.0, 20.0], [30.0, 40.0]]),
+            {'0008|0022': ['20240119'], '0008|0032': ['130000.0']})
+        id2 = animo.ImageData(
+            np.array([[2.0, 4.0], [6.0, 8.0]]),
+            {'0008|0022': ['20240119'], '0008|0032': ['140000.0']})
+        id1.decay_correction(id2, 3600.0)
+        self.assertEqual(id1.voxel_data[0, 0], 5.0)
+        self.assertEqual(id1.voxel_data[0, 0], 10.0)
+        self.assertEqual(id1.voxel_data[0, 0], 15.0)
+        self.assertEqual(id1.voxel_data[0, 0], 20.0)
+        self.assertEqual(id2.voxel_data[0, 0], 2.0)
+        self.assertEqual(id2.voxel_data[0, 0], 4.0)
+        self.assertEqual(id2.voxel_data[0, 0], 6.0)
+        self.assertEqual(id2.voxel_data[0, 0], 8.0)
+        id2.decay_correction(id1, 3600.0)
+        self.assertEqual(id1.voxel_data[0, 0], 5.0)
+        self.assertEqual(id1.voxel_data[0, 0], 10.0)
+        self.assertEqual(id1.voxel_data[0, 0], 15.0)
+        self.assertEqual(id1.voxel_data[0, 0], 20.0)
+        self.assertEqual(id2.voxel_data[0, 0], 4.0)
+        self.assertEqual(id2.voxel_data[0, 0], 8.0)
+        self.assertEqual(id2.voxel_data[0, 0], 12.0)
+        self.assertEqual(id2.voxel_data[0, 0], 16.0)
+
 
 class TestLoadImageSeriesFromFile(unittest.TestCase):
 

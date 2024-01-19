@@ -1,8 +1,12 @@
+from typing import TYPE_CHECKING
+
 import numpy as np
 import numpy.typing as npt
 import SimpleITK as sitk
 from datetime import datetime
 from typing import Optional
+if TYPE_CHECKING:
+    import animo
 
 
 class ImageData:
@@ -13,6 +17,9 @@ class ImageData:
     def __init__(self, voxel_data: npt.NDArray[np.float64], meta_data: dict[str, list[str]]):
         self.voxel_data = voxel_data
         self.meta_data = meta_data
+
+    def decay_correction(self, ref: "animo.ImageData", t12_sec: float) -> None:
+        return
 
 
 def load_image_series_from_file(fp: str, tags: Optional[list[str]] = None) -> ImageData:

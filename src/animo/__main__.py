@@ -11,6 +11,7 @@ def main(argv: list[str]):
     task_types = {
         'ImageSeriesLoad': animo.image_series_loader,
         'ImageLoad': animo.image_loader,
+        'DecayCorrection': animo.image_decay_correction,
         'TAC': animo.tac_from_labelmap,
         'IntXY': animo.int_xy,
         'AvgXY': animo.avg_xy,

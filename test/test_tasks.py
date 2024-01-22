@@ -48,6 +48,34 @@ class TestImageLoader(unittest.TestCase):
         self.assertEqual(no['Cyl101'].meta_data, {})
 
 
+class TestImageDecayCorrection(unittest.TestCase):
+
+    def test_decay_correct(self):
+        f = open(os.path.join('test', 'xml_input', 'decay_corr.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+
+        oi = animo.load_image_series_from_file(
+            os.path.join('test', 'data', '8_3V'), tags=['0008|0022', '0008|0032'])
+        # Acquisition time: 133028
+
+        ref = animo.load_image_series_from_file(
+            os.path.join('test', 'data', 'static'), tags=['0008|0022', '0008|0032'])
+        # Acquisition time: 124241
+        # Seconds between: 2867
+
+        no: dict[str, Any] = {'A': oi, 'B': ref}
+        self.assertEqual(oi.get_no_frames(), 9)
+        self.assertEqual(oi.get_matrix_size(), (64, 128, 128, ))
+        self.assertAlmostEqual(float(oi.voxel_data[0, 7, 64, 56]), 125.77615, places=5)
+        self.assertAlmostEqual(float(oi.voxel_data[3, 46, 59, 70]), 471.94589, places=5)
+        self.assertAlmostEqual(float(oi.voxel_data[8, 54, 68, 67]), 187.133247, places=5)
+        animo.image_decay_correction(task, no)
+        self.assertAlmostEqual(float(oi.voxel_data[0, 7, 64, 56]), 137.8827, places=4)
+        self.assertAlmostEqual(float(oi.voxel_data[3, 46, 59, 70]), 517.3730, places=4)
+        self.assertAlmostEqual(float(oi.voxel_data[8, 54, 68, 67]), 205.1458, places=4)
+
+
 class TestTACFromLabelmap(unittest.TestCase):
 
     def test_image_load(self):

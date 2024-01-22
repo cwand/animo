@@ -27,6 +27,17 @@ def image_loader(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None
     print("")
 
 
+def image_decay_correction(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
+    print("TASK: DECAY CORRECTION")
+    print(task)
+
+    img: animo.ImageData = named_obj[task['image']]
+    ref: animo.ImageData = named_obj[task['ref']]
+    t12 = float(task['t12'])
+    img.decay_correction(ref, t12)
+    print("")
+
+
 def tac_from_labelmap(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
     print("TASK: CALCULATE TAC")
     print(task)

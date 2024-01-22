@@ -4,6 +4,16 @@
         <meta>0008|0022,0008|0032</meta>
         <result_name>8_3V</result_name>
     </task>
+    <task type="ImageSeriesLoad">
+        <path>test/data/static/</path>
+        <meta>0008|0022,0008|0032</meta>
+        <result_name>static</result_name>
+    </task>
+    <task type="DecayCorrection">
+        <image>8_3V</image>
+        <ref>static</ref>
+        <t12>21624.12</t12>
+    </task>
     <task type="ImageLoad">
         <path>test/data/segs/Cyl101.nrrd</path>
         <result_name>Cyl101</result_name>

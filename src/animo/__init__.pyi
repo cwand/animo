@@ -13,6 +13,9 @@ class XYData:
     def __init__(self, x_data: npt.NDArray[np.float64], y_data: npt.NDArray[np.float64]): ...
 
 
+def write_data(data: tuple[npt.NDArray[np.float64], ...], col_hdr: tuple[str, ...], fp: str) -> None : ...
+
+
 # From image.py
 
 class ImageData:

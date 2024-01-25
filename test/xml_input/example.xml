@@ -23,15 +23,4 @@
         <roi>Cyl101</roi>
         <result_name>8_3V_TAC</result_name>
     </task>
-    <task type="PlotXY">
-        <dataset>
-            <data>
-                <name>8_3V_TAC</name>
-                <style>kx-</style>
-                <label>8.3V</label>
-            </data>
-        </dataset>
-        <xlabel>Time [s]</xlabel>
-        <ylabel>Activity</ylabel>
-    </task>
 </animo>

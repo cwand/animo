@@ -5,14 +5,6 @@ from typing import OrderedDict, Any, Optional, Union
 
 # From common.py
 
-class XYData:
-
-    x: npt.NDArray[np.float64]
-    y: npt.NDArray[np.float64]
-
-    def __init__(self, x_data: npt.NDArray[np.float64], y_data: npt.NDArray[np.float64]): ...
-
-
 def write_data(data: tuple[npt.NDArray[np.float64], ...], col_hdr: tuple[str, ...], fp: str) -> None : ...
 
 
@@ -38,26 +30,10 @@ def load_image_series_from_file(fp: str, tags: Optional[list[str]] = ...) -> Ima
 def load_image_from_file(fp: str) -> ImageData : ...
 
 
-
-
-# From plotter.py
-
-class XYDataPlotWrapper:
-
-    data: XYData
-    linestyle: Union[str, None]
-    label: Union[str, None]
-
-    def __init__(self, data: XYData, linestyle: str, label: str): ...
-
-def plot_xy(xydata: list[XYDataPlotWrapper], out_file: Optional[str] = ...,
-            xlabel: Optional[str] = ..., ylabel: Optional[str] = ...,
-			ylim_low: Optional[float] = ..., ylim_high: Optional[float] = ...) -> None: ...
-
-
 # From tac.py
 
-def extract_tac_from_01labelmap(image_series: ImageData, roi: ImageData) -> XYData: ...
+def extract_tac_from_01labelmap(image_series: ImageData, roi: ImageData) \
+        -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: ...
 
 
 # From tasks.py
@@ -70,12 +46,10 @@ def image_decay_correction(task: OrderedDict[str, Any], named_obj: dict[str, Any
 
 def tac_from_labelmap(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None: ...
 
-def int_xy(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None: ...
+def integrate(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None: ...
 
 def avg_xy(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None: ...
 
 def eval_expr(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None: ...
 
 def to_xydata(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None: ...
-
-def xyplotter(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None: ...

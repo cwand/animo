@@ -89,28 +89,30 @@ class TestTACFromLabelmap(unittest.TestCase):
                 os.path.join('test', 'data', 'segs', 'Cyl101.nrrd'))
         }
         animo.tac_from_labelmap(task, no)
-        self.assertIsInstance(no['8_3V_TAC'], animo.XYData)
+        self.assertIsInstance(no['8_3V_T'], np.ndarray)
+        self.assertIsInstance(no['8_3V_TAC'], np.ndarray)
+        t = no['8_3V_T']
         tac = no['8_3V_TAC']
-        self.assertEqual(tac.x.shape, (9,))
-        self.assertEqual(tac.y.shape, (9,))
-        self.assertEqual(tac.x[0], 0.0)
-        self.assertEqual(tac.x[1], 3.0)
-        self.assertEqual(tac.x[2], 6.3)
-        self.assertEqual(tac.x[3], 9.5)
-        self.assertEqual(tac.x[4], 12.8)
-        self.assertEqual(tac.x[5], 16.0)
-        self.assertEqual(tac.x[6], 19.3)
-        self.assertEqual(tac.x[7], 22.5)
-        self.assertEqual(tac.x[8], 25.8)
-        self.assertAlmostEqual(float(tac.y[0]), 2062.73466, 1)
-        self.assertAlmostEqual(float(tac.y[1]), 1553329.386, 0)
-        self.assertAlmostEqual(float(tac.y[2]) / 1000.0, 18607.9194, 0)
-        self.assertAlmostEqual(float(tac.y[3]) / 1000.0, 48918.2085, 1)
-        self.assertAlmostEqual(float(tac.y[4]) / 1000.0, 41655.6189, 1)
-        self.assertAlmostEqual(float(tac.y[5]) / 10000.0, 1051.76287, 0)
-        self.assertAlmostEqual(float(tac.y[6]), 731450.412, 0)
-        self.assertAlmostEqual(float(tac.y[7]), 1653.982659, 3)
-        self.assertAlmostEqual(float(tac.y[8]), 66.6683136, 4)
+        self.assertEqual(t.shape, (9,))
+        self.assertEqual(tac.shape, (9,))
+        self.assertEqual(t[0], 0.0)
+        self.assertEqual(t[1], 3.0)
+        self.assertEqual(t[2], 6.3)
+        self.assertEqual(t[3], 9.5)
+        self.assertEqual(t[4], 12.8)
+        self.assertEqual(t[5], 16.0)
+        self.assertEqual(t[6], 19.3)
+        self.assertEqual(t[7], 22.5)
+        self.assertEqual(t[8], 25.8)
+        self.assertAlmostEqual(float(tac[0]), 2062.73466, 1)
+        self.assertAlmostEqual(float(tac[1]), 1553329.386, 0)
+        self.assertAlmostEqual(float(tac[2]) / 1000.0, 18607.9194, 0)
+        self.assertAlmostEqual(float(tac[3]) / 1000.0, 48918.2085, 1)
+        self.assertAlmostEqual(float(tac[4]) / 1000.0, 41655.6189, 1)
+        self.assertAlmostEqual(float(tac[5]) / 10000.0, 1051.76287, 0)
+        self.assertAlmostEqual(float(tac[6]), 731450.412, 0)
+        self.assertAlmostEqual(float(tac[7]), 1653.982659, 3)
+        self.assertAlmostEqual(float(tac[8]), 66.6683136, 4)
 
 
 class TestIntXY(unittest.TestCase):
@@ -119,21 +121,19 @@ class TestIntXY(unittest.TestCase):
         f = open(os.path.join('test', 'xml_input', 'intxy.xml'))
         tree = xmltodict.parse(f.read(), xml_attribs=True)
         task = tree['animo']['task']
-        xy = animo.XYData(np.array([0.0, 1.0]), np.array([0.0, 0.0]))
-        no: dict[str, Any] = {'XY': xy}
-        animo.int_xy(task, no)
-        self.assertIsInstance(no['intXY'], float)
-        self.assertEqual(no['intXY'], 0.0)
+        no: dict[str, Any] = {'X': np.array([0.0, 1.0]), 'Y': np.array([0.0, 0.0])}
+        animo.integrate(task, no)
+        self.assertIsInstance(no['integral'], float)
+        self.assertEqual(no['integral'], 0.0)
 
     def test_int_triangle(self):
         f = open(os.path.join('test', 'xml_input', 'intxy.xml'))
         tree = xmltodict.parse(f.read(), xml_attribs=True)
         task = tree['animo']['task']
-        xy = animo.XYData(np.array([0.0, 1.0, 2.0, 3.0, 4.0]), np.array([0.0, 0.0, 1.0, 0.0, 0.0]))
-        no: dict[str, Any] = {'XY': xy}
-        animo.int_xy(task, no)
-        self.assertIsInstance(no['intXY'], float)
-        self.assertEqual(no['intXY'], 1.0)
+        no: dict[str, Any] = {'X': np.array([0.0, 1.0, 2.0, 3.0, 4.0]), 'Y': np.array([0.0, 0.0, 1.0, 0.0, 0.0])}
+        animo.integrate(task, no)
+        self.assertIsInstance(no['integral'], float)
+        self.assertEqual(no['integral'], 1.0)
 
 
 class TestAvgXY(unittest.TestCase):

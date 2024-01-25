@@ -1,6 +1,7 @@
 <animo>
-    <task type="IntXY">
-        <xydata>XY</xydata>
-        <result_name>intXY</result_name>
+    <task type="Integrate">
+        <x>X</x>
+        <y>Y</y>
+        <result_name>integral</result_name>
     </task>
 </animo>

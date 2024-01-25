@@ -1,5 +1,6 @@
 from typing import OrderedDict, Any
 import numpy as np
+import numpy.typing as npt
 import animo
 import math
 
@@ -44,18 +45,20 @@ def tac_from_labelmap(task: OrderedDict[str, Any], named_obj: dict[str, Any]) ->
 
     image_series = task['image_series']
     roi = task['roi']
-    result_name = task['result_name']
-    named_obj[result_name] = animo.extract_tac_from_01labelmap(
+    t_name = task['t_name']
+    tac_name = task['tac_name']
+    named_obj[t_name], named_obj[tac_name] = animo.extract_tac_from_01labelmap(
         named_obj[image_series], named_obj[roi])
     print("")
 
 
-def int_xy(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
+def integrate(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
     print("TASK: INTEGRATE XY-DATA")
     print(task)
-    xydata: animo.XYData = named_obj[task['xydata']]
+    x: npt.NDArray[np.float64] = named_obj[task['x']]
+    y: npt.NDArray[np.float64] = named_obj[task['y']]
     result_name = task['result_name']
-    named_obj[result_name] = np.trapz(xydata.y, xydata.x)
+    named_obj[result_name] = np.trapz(y, x)
     print("")
 
 

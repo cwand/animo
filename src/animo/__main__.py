@@ -19,15 +19,9 @@ def main(argv: list[str]):
         # Calculate a time-activity curve from an image and a ROI
         'TAC': animo.tac_from_labelmap,
         # Calculate integral of XYData
-        'IntXY': animo.int_xy,
-        # Calculate average of XYData
-        'AvgXY': animo.avg_xy,
+        'IntXY': animo.integrate,
         # Evaluate an arithmetic expression
         'Eval': animo.eval_expr,
-        # Collect data in an XYData object
-        'ToXYData': animo.to_xydata,
-        # Plot XYData
-        'PlotXY': animo.xyplotter,
     }
 
     # This object will collect all the results from running the tasks.

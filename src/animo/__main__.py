@@ -18,8 +18,10 @@ def main(argv: list[str]):
         'DecayCorrection': animo.image_decay_correction,
         # Calculate a time-activity curve from an image and a ROI
         'TAC': animo.tac_from_labelmap,
-        # Calculate integral of XYData
-        'IntXY': animo.integrate,
+        # Calculate mean and variance of dataset
+        'Average': animo.average,
+        # Calculate integral of xy-data
+        'Integrate': animo.integrate,
         # Evaluate an arithmetic expression
         'Eval': animo.eval_expr,
     }

@@ -115,6 +115,31 @@ class TestTACFromLabelmap(unittest.TestCase):
         self.assertAlmostEqual(float(tac[8]), 66.6683136, 4)
 
 
+class TestMean(unittest.TestCase):
+
+    def test_mean_0(self):
+        f = open(os.path.join('test', 'xml_input', 'average.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        no: dict[str, Any] = {'x': np.array([0.0, 0.0, 0.0]), }
+        animo.average(task, no)
+        self.assertIsInstance(no['mu'], float)
+        self.assertEqual(no['mu'], 0.0)
+        self.assertIsInstance(no['s2'], float)
+        self.assertEqual(no['s2'], 0.0)
+
+    def test_mean_2d(self):
+        f = open(os.path.join('test', 'xml_input', 'average.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        no: dict[str, Any] = {'x': np.array([[0.0, 1.0, 1.5], [2.0, -1.0, 0.1]]), }
+        animo.average(task, no)
+        self.assertIsInstance(no['mu'], float)
+        self.assertEqual(no['mu'], 0.6)
+        self.assertIsInstance(no['s2'], float)
+        self.assertAlmostEqual(no['s2'], 1.01666667, places=8)
+
+
 class TestIntXY(unittest.TestCase):
 
     def test_int_0(self):

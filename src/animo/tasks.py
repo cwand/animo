@@ -52,6 +52,17 @@ def tac_from_labelmap(task: OrderedDict[str, Any], named_obj: dict[str, Any]) ->
     print("")
 
 
+def average(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
+    print("TASK: CALCULATE MEAN AND VARIANCE")
+    print(task)
+    x: npt.NDArray[np.float64] = named_obj[task['data']]
+    mean_name = task['mean_name']
+    var_name = task['var_name']
+    named_obj[mean_name] = np.mean(x)
+    named_obj[var_name] = np.var(x)
+    print("")
+
+
 def integrate(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
     print("TASK: INTEGRATE XY-DATA")
     print(task)

@@ -1,6 +1,0 @@
-<animo>
-    <task type="Eval">
-        <expression>A*math.exp(B*0.000032054)</expression>
-        <result_name>C</result_name>
-    </task>
-</animo>

@@ -18,12 +18,6 @@ def main(argv: list[str]):
         'DecayCorrection': animo.image_decay_correction,
         # Calculate a time-activity curve from an image and a ROI
         'TAC': animo.tac_from_labelmap,
-        # Calculate mean and variance of dataset
-        'Average': animo.average,
-        # Calculate integral of xy-data
-        'Integrate': animo.integrate,
-        # Evaluate an arithmetic expression
-        'Eval': animo.eval_expr,
     }
 
     # This object will collect all the results from running the tasks.

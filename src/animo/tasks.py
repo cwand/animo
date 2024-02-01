@@ -1,8 +1,5 @@
 from typing import OrderedDict, Any
-import numpy as np
-import numpy.typing as npt
 import animo
-import math
 
 
 def image_series_loader(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
@@ -49,37 +46,4 @@ def tac_from_labelmap(task: OrderedDict[str, Any], named_obj: dict[str, Any]) ->
     tac_name = task['tac_name']
     named_obj[t_name], named_obj[tac_name] = animo.extract_tac_from_01labelmap(
         named_obj[image_series], named_obj[roi])
-    print("")
-
-
-def average(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
-    print("TASK: CALCULATE MEAN AND VARIANCE")
-    print(task)
-    x: npt.NDArray[np.float64] = named_obj[task['data']]
-    mean_name = task['mean_name']
-    var_name = task['var_name']
-    named_obj[mean_name] = np.mean(x)
-    named_obj[var_name] = np.var(x)
-    print("")
-
-
-def integrate(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
-    print("TASK: INTEGRATE XY-DATA")
-    print(task)
-    x: npt.NDArray[np.float64] = named_obj[task['x']]
-    y: npt.NDArray[np.float64] = named_obj[task['y']]
-    result_name = task['result_name']
-    named_obj[result_name] = np.trapz(y, x)
-    print("")
-
-
-def eval_expr(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
-    print("TASK: EVALUATE EXPRESSION")
-    print(task)
-
-    res = eval(task['expression'], {'math': math}, named_obj)
-
-    result_name = task['result_name']
-    named_obj[result_name] = res
-
     print("")

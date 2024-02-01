@@ -1,7 +1,0 @@
-<animo>
-    <task type="Mean">
-        <data>x</data>
-        <mean_name>mu</mean_name>
-        <var_name>s2</var_name>
-    </task>
-</animo>

@@ -47,3 +47,17 @@ def tac_from_labelmap(task: OrderedDict[str, Any], named_obj: dict[str, Any]) ->
     named_obj[t_name], named_obj[tac_name] = animo.extract_tac_from_01labelmap(
         named_obj[image_series], named_obj[roi])
     print("")
+
+
+def writer(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
+    print("TASK: WRITE DATA TO FILE")
+    print(task)
+
+    write_path: str = task['path']
+
+    headers = [col['header'] for col in task['dataset']['col']]
+    data_arrays = [named_obj[col['data']] for col in task['dataset']['col']]
+
+    animo.write_data(tuple(data_arrays), tuple(headers), write_path)
+
+    print("")

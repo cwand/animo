@@ -1,0 +1,15 @@
+<animo>
+    <task type="Write">
+        <dataset>
+            <col>
+                <header>A</header>
+                <data>x</data>
+            </col>
+            <col>
+                <header>B [m/s]</header>
+                <data>y</data>
+            </col>
+        </dataset>
+        <path>test/test_write_task.txt</path>
+    </task>
+</animo>

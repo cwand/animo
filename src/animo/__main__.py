@@ -18,6 +18,8 @@ def main(argv: list[str]):
         'DecayCorrection': animo.image_decay_correction,
         # Calculate a time-activity curve from an image and a ROI
         'TAC': animo.tac_from_labelmap,
+        # Write data to file
+        'Write': animo.writer,
     }
 
     # This object will collect all the results from running the tasks.
@@ -36,7 +38,7 @@ def main(argv: list[str]):
     # Create the task tree.
     # Some elements of the xml-file are expected to be lists, but
     # might only contain one element. These are forced into lists.
-    task_tree = xmltodict.parse(xml_file.read(), force_list=('task', 'data'))
+    task_tree = xmltodict.parse(xml_file.read(), force_list=('task', 'col', ))
 
     # The <animo> tag defines the root of the task tree.
     root = task_tree['animo']

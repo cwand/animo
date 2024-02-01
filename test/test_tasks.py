@@ -1,5 +1,6 @@
 import unittest
 import os
+import pytest
 import animo
 import xmltodict
 from typing import Any
@@ -113,3 +114,55 @@ class TestTACFromLabelmap(unittest.TestCase):
         self.assertAlmostEqual(float(tac[6]), 731450.412, 0)
         self.assertAlmostEqual(float(tac[7]), 1653.982659, 3)
         self.assertAlmostEqual(float(tac[8]), 66.6683136, 4)
+
+
+@pytest.fixture(autouse=True)
+def cleanup():
+    to_delete = [os.path.join('test', 'test_write_task.txt')]
+    yield to_delete
+    for item in to_delete:
+        if os.path.exists(item):
+            os.remove(item)
+
+
+class TestWriter(unittest.TestCase):
+
+    def test_write_one_col(self):
+        f = open(os.path.join('test', 'xml_input', 'writer1.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True, force_list=('col', ))
+        task = tree['animo']['task']
+        no: dict[str, Any] = {
+            'x': np.array([1.0, 2.0, 2.5]),
+        }
+        animo.writer(task, no)
+        with open(os.path.join('test', 'test_write_task.txt')) as f:
+            lines = f.readlines()
+            self.assertEqual(4, len(lines))
+            self.assertEqual("# A", lines[0].strip())
+            self.assertEqual("1.000000000000000000e+00", lines[1].strip())
+            self.assertEqual("2.000000000000000000e+00", lines[2].strip())
+            self.assertEqual("2.500000000000000000e+00", lines[3].strip())
+
+    def test_write_two_col(self):
+        f = open(os.path.join('test', 'xml_input', 'writer2.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True, force_list=('col', ))
+        task = tree['animo']['task']
+        no: dict[str, Any] = {
+            'x': np.array([1.0, 2.0, 2.5, 5.6]),
+            'y': np.array([-1.00056, 2000.000001, 15678654543.1, -1]),
+        }
+        animo.writer(task, no)
+        with open(os.path.join('test', 'test_write_task.txt')) as f:
+            lines = f.readlines()
+            self.assertEqual(5, len(lines))
+            self.assertEqual("# A\tB [m/s]", lines[0].strip())
+        t = np.loadtxt(os.path.join('test', 'test_write_task.txt'), delimiter=',')
+        self.assertEqual(t.shape, (4, 2))
+        self.assertAlmostEqual(float(t[0, 0]), 1.0, places=18)
+        self.assertAlmostEqual(float(t[1, 0]), 2.0, places=18)
+        self.assertAlmostEqual(float(t[2, 0]), 2.5, places=18)
+        self.assertAlmostEqual(float(t[3, 0]), 5.6, places=18)
+        self.assertAlmostEqual(float(t[0, 1]), -1.00056, places=18)
+        self.assertAlmostEqual(float(t[1, 1]), 2000.000001, places=18)
+        self.assertAlmostEqual(float(t[2, 1]), 15678654543.1, places=18)
+        self.assertAlmostEqual(float(t[3, 1]), -1.0, places=18)

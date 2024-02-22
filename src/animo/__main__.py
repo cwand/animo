@@ -14,8 +14,6 @@ def main(argv: list[str]):
         'ImageSeriesLoad': animo.image_series_loader,
         # Load an image from a single file
         'ImageLoad': animo.image_loader,
-        # Apply decay correction to an image
-        'DecayCorrection': animo.image_decay_correction,
         # Calculate a time-activity curve from an image and a ROI
         'TAC': animo.tac_from_labelmap,
         # Write data to file

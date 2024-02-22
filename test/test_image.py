@@ -155,3 +155,26 @@ class TestGetAcqDatetime(unittest.TestCase):
     def test_acq_date_time_missing_meta(self):
         x = animo.load_image_series_from_file(os.path.join('test', 'data', 'nema'))
         self.assertRaises(KeyError, x.get_acq_datetime)
+
+
+class TestGetAcqDuration(unittest.TestCase):
+
+    def test_acq_duration_9_images(self):
+        x = animo.load_image_series_from_file(os.path.join('test', 'data', '8_3V'),
+                                              tags=['0018|1242'])
+        ds = x.get_acq_duration()
+        self.assertEqual(len(ds), 9)
+        self.assertEqual(ds[0], 3.04)
+        self.assertEqual(ds[1], 3.26)
+        self.assertEqual(ds[2], 3.26)
+        self.assertEqual(ds[3], 3.26)
+        self.assertEqual(ds[4], 3.25)
+        self.assertEqual(ds[5], 3.26)
+        self.assertEqual(ds[6], 3.25)
+        self.assertEqual(ds[7], 3.26)
+        self.assertEqual(ds[8], 3.26)
+
+    def test_acq_date_time_missing_meta(self):
+        x = animo.load_image_series_from_file(os.path.join('test', 'data', '8_3V'),
+                                              tags=['0008|0021', '0008|0032'])
+        self.assertRaises(KeyError, x.get_acq_duration)

@@ -33,6 +33,28 @@ class TestImageSeriesLoader(unittest.TestCase):
         self.assertEqual(no['8_3V'].voxel_data.shape, (9, 64, 128, 128))
         self.assertEqual(no['8_3V'].meta_data, {})
 
+    def test_image_series_load_decay(self):
+        f = open(os.path.join('test', 'xml_input', 'image_series_load_decay.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+
+        ref = animo.load_image_series_from_file(
+            os.path.join('test', 'data', 'static'), tags=['0008|0022', '0008|0032'])
+        no: dict[str, Any] = {'static': ref}
+
+        animo.image_series_loader(task, no)
+        self.assertIsInstance(no['8_3V'], animo.ImageData)
+
+        self.assertEqual(no['8_3V'].get_no_frames(), 9)
+        self.assertEqual(no['8_3V'].get_matrix_size(), (64, 128, 128,))
+        # self.assertAlmostEqual(float(no['8_3V'].voxel_data[0, 7, 64, 56]), 125.77615, places=5)
+        # self.assertAlmostEqual(float(no['8_3V'].voxel_data[3, 46, 59, 70]), 471.94589, places=5)
+        # self.assertAlmostEqual(float(no['8_3V'].voxel_data[8, 54, 68, 67]), 187.133247, places=5)
+        # Seconds between: 2867
+        self.assertAlmostEqual(float(no['8_3V'].voxel_data[0, 7, 64, 56]), 137.8827, places=4)
+        self.assertAlmostEqual(float(no['8_3V'].voxel_data[3, 46, 59, 70]), 517.3730, places=4)
+        self.assertAlmostEqual(float(no['8_3V'].voxel_data[8, 54, 68, 67]), 205.1458, places=4)
+
 
 class TestImageLoader(unittest.TestCase):
 
@@ -47,34 +69,6 @@ class TestImageLoader(unittest.TestCase):
         self.assertEqual(no['Cyl101'].voxel_data.shape, (64, 128, 128))
         self.assertEqual(np.sum(no['Cyl101'].voxel_data), 1701)
         self.assertEqual(no['Cyl101'].meta_data, {})
-
-
-class TestImageDecayCorrection(unittest.TestCase):
-
-    def test_decay_correct(self):
-        f = open(os.path.join('test', 'xml_input', 'decay_corr.xml'))
-        tree = xmltodict.parse(f.read(), xml_attribs=True)
-        task = tree['animo']['task']
-
-        oi = animo.load_image_series_from_file(
-            os.path.join('test', 'data', '8_3V'), tags=['0008|0022', '0008|0032'])
-        # Acquisition time: 133028
-
-        ref = animo.load_image_series_from_file(
-            os.path.join('test', 'data', 'static'), tags=['0008|0022', '0008|0032'])
-        # Acquisition time: 124241
-        # Seconds between: 2867
-
-        no: dict[str, Any] = {'A': oi, 'B': ref}
-        self.assertEqual(oi.get_no_frames(), 9)
-        self.assertEqual(oi.get_matrix_size(), (64, 128, 128, ))
-        self.assertAlmostEqual(float(oi.voxel_data[0, 7, 64, 56]), 125.77615, places=5)
-        self.assertAlmostEqual(float(oi.voxel_data[3, 46, 59, 70]), 471.94589, places=5)
-        self.assertAlmostEqual(float(oi.voxel_data[8, 54, 68, 67]), 187.133247, places=5)
-        animo.image_decay_correction(task, no)
-        self.assertAlmostEqual(float(oi.voxel_data[0, 7, 64, 56]), 137.8827, places=4)
-        self.assertAlmostEqual(float(oi.voxel_data[3, 46, 59, 70]), 517.3730, places=4)
-        self.assertAlmostEqual(float(oi.voxel_data[8, 54, 68, 67]), 205.1458, places=4)
 
 
 class TestTACFromLabelmap(unittest.TestCase):

@@ -48,6 +48,14 @@ class ImageData:
             acq_datetimes.append(datetime.fromisoformat(sd))
         return acq_datetimes
 
+    def get_acq_duration(self) -> list[float]:
+        if '0018|1242' not in self.meta_data:
+            raise KeyError("ANIMO: Missing key 0018|1242 in GET_ACQ_DURATION")
+        acq_durations = []
+        for i in range(self.get_no_frames()):
+            acq_durations.append(float(self.meta_data['0018|1242'][i])/1000)
+        return acq_durations
+
     def decay_correction(self, ref: "animo.ImageData", t12_sec: float) -> None:
         my_time = self.get_acq_datetime()
         ref_time = ref.get_acq_datetime()

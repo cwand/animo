@@ -1,0 +1,11 @@
+<animo>
+    <task type="ImageSeriesLoad">
+        <path>test/data/8_3V/</path>
+        <meta>0008|0022,0008|0032</meta>
+        <result_name>8_3V</result_name>
+        <decay>
+            <t12>21624.12</t12>
+            <ref>static</ref>
+        </decay>
+    </task>
+</animo>

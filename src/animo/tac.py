@@ -19,3 +19,7 @@ def extract_tac_from_01labelmap(image_series: animo.ImageData, roi: animo.ImageD
     x = [np.sum(np.multiply(image_series.voxel_data[i], roi.voxel_data)) for i in range(nims)]
 
     return np.array(t), np.array(fd), np.array(x)
+
+
+def integrate_tac(frame_start: npt.NDArray[np.float64], tac: npt.NDArray[np.float64]) -> float:
+    return np.trapz(tac, frame_start)

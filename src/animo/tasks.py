@@ -1,4 +1,7 @@
 from typing import OrderedDict, Any
+
+import numpy as np
+
 import animo
 
 
@@ -42,6 +45,33 @@ def tac_from_labelmap(task: OrderedDict[str, Any], named_obj: dict[str, Any]) ->
     tac_name = task['tac_name']
     named_obj[t_name], named_obj[d_name], named_obj[tac_name] = animo.extract_tac_from_01labelmap(
         named_obj[image_series], named_obj[roi])
+    print("")
+
+
+def tac_integrate(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
+    print("TASK: INTEGRATE TAC")
+    print(task)
+
+    frame_start = task['frame_start']
+    tac = task['tac']
+    result_name = task['result_name']
+    named_obj[result_name] = animo.integrate_tac(named_obj[frame_start], named_obj[tac])
+    print("")
+
+
+def mean_var_calc(task: OrderedDict[str, Any], named_obj: dict[str, Any]) -> None:
+    print("TASK: CALCULATE MEAN AND VARIANCE")
+    print(task)
+
+    data = task['data']
+    mean_name = task['mean_name']
+    var_name = task['var_name']
+
+    d = named_obj[data]
+
+    named_obj[mean_name] = np.mean(d)
+    named_obj[var_name] = np.var(d, ddof=1)
+
     print("")
 
 

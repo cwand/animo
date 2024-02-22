@@ -122,6 +122,37 @@ class TestTACFromLabelmap(unittest.TestCase):
         self.assertAlmostEqual(float(tac[8]), 66.6683136, 4)
 
 
+class TestTACIntegrate(unittest.TestCase):
+
+    def test_integrate(self):
+        f = open(os.path.join('test', 'xml_input', 'tac_integral.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        no: dict[str, Any] = {
+            'A': np.array([0.0, 1.0, 2.0, 3.0, 4.0]),
+            'B': np.array([0.0, 1.0, 1.0, 2.0, 0.0]),
+        }
+        animo.tac_integrate(task, no)
+        self.assertIsInstance(no['C'], float)
+        self.assertEqual(no['C'], 4.0)
+
+
+class TestMeanVarCalc(unittest.TestCase):
+
+    def test_mean_var(self):
+        f = open(os.path.join('test', 'xml_input', 'mean_var.xml'))
+        tree = xmltodict.parse(f.read(), xml_attribs=True)
+        task = tree['animo']['task']
+        no: dict[str, Any] = {
+            'A': np.array([1.2, 2.1, 3.0, 2.4]),
+        }
+        animo.mean_var_calc(task, no)
+        self.assertIsInstance(no['mu'], float)
+        self.assertEqual(no['mu'], 2.175)
+        self.assertIsInstance(no['var'], float)
+        self.assertEqual(no['var'], 0.5625)
+
+
 @pytest.fixture(autouse=True)
 def cleanup():
     to_delete = [os.path.join('test', 'test_write_task.txt')]

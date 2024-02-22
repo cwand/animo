@@ -16,6 +16,10 @@ def main(argv: list[str]):
         'ImageLoad': animo.image_loader,
         # Calculate a time-activity curve from an image and a ROI
         'TAC': animo.tac_from_labelmap,
+        # Calculate integral of TAC
+        'IntegrateTAC': animo.tac_integrate,
+        # Calculate mean and variance of data
+        'MeanVar': animo.mean_var_calc,
         # Write data to file
         'Write': animo.writer,
     }

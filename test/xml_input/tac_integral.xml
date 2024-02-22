@@ -1,0 +1,7 @@
+<animo>
+    <task type="IntegrateTAC">
+        <frame_start>A</frame_start>
+        <tac>B</tac>
+        <result_name>C</result_name>
+    </task>
+</animo>

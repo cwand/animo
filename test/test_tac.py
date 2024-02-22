@@ -1,4 +1,7 @@
 import unittest
+
+import numpy as np
+
 import animo
 import os
 
@@ -40,3 +43,12 @@ class TestExtractTACFrom01Labelmap(unittest.TestCase):
         self.assertAlmostEqual(float(tac[6]), 731450.412, 0)
         self.assertAlmostEqual(float(tac[7]), 1653.982659, 3)
         self.assertAlmostEqual(float(tac[8]), 66.6683136, 4)
+
+
+class TestIntegrateTAC(unittest.TestCase):
+
+    def test_integrate(self):
+        t = np.array([0.0, 1.0, 2.0, 3.0, 4.0])
+        tac = np.array([0.0, 1.0, 1.0, 2.0, 0.0])
+        i = animo.integrate_tac(t, tac)
+        self.assertEqual(i, 4.0)

@@ -1,0 +1,7 @@
+<animo>
+    <task type="MeanVar">
+        <data>A</data>
+        <mean_name>mu</mean_name>
+        <var_name>var</var_name>
+    </task>
+</animo>

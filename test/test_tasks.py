@@ -79,16 +79,19 @@ class TestTACFromLabelmap(unittest.TestCase):
         task = tree['animo']['task']
         no: dict[str, Any] = {
             '8_3V': animo.load_image_series_from_file(
-                os.path.join('test', 'data', '8_3V'), tags=['0008|0022', '0008|0032']),
+                os.path.join('test', 'data', '8_3V'), tags=['0008|0022', '0008|0032', '0018|1242']),
             'Cyl101': animo.load_image_from_file(
                 os.path.join('test', 'data', 'segs', 'Cyl101.nrrd'))
         }
         animo.tac_from_labelmap(task, no)
         self.assertIsInstance(no['8_3V_T'], np.ndarray)
+        self.assertIsInstance(no['8_3V_D'], np.ndarray)
         self.assertIsInstance(no['8_3V_TAC'], np.ndarray)
         t = no['8_3V_T']
+        d = no['8_3V_D']
         tac = no['8_3V_TAC']
         self.assertEqual(t.shape, (9,))
+        self.assertEqual(d.shape, (9,))
         self.assertEqual(tac.shape, (9,))
         self.assertEqual(t[0], 0.0)
         self.assertEqual(t[1], 3.0)
@@ -99,6 +102,15 @@ class TestTACFromLabelmap(unittest.TestCase):
         self.assertEqual(t[6], 19.3)
         self.assertEqual(t[7], 22.5)
         self.assertEqual(t[8], 25.8)
+        self.assertEqual(d[0], 3.04)
+        self.assertEqual(d[1], 3.26)
+        self.assertEqual(d[2], 3.26)
+        self.assertEqual(d[3], 3.26)
+        self.assertEqual(d[4], 3.25)
+        self.assertEqual(d[5], 3.26)
+        self.assertEqual(d[6], 3.25)
+        self.assertEqual(d[7], 3.26)
+        self.assertEqual(d[8], 3.26)
         self.assertAlmostEqual(float(tac[0]), 2062.73466, 1)
         self.assertAlmostEqual(float(tac[1]), 1553329.386, 0)
         self.assertAlmostEqual(float(tac[2]) / 1000.0, 18607.9194, 0)

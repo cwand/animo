@@ -2,7 +2,8 @@
     <task type="TAC">
         <image_series>8_3V</image_series>
         <roi>Cyl101</roi>
-        <t_name>8_3V_T</t_name>
+        <frame_start_name>8_3V_T</frame_start_name>
+        <frame_duration_name>8_3V_D</frame_duration_name>
         <tac_name>8_3V_TAC</tac_name>
     </task>
 </animo>

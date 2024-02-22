@@ -37,9 +37,10 @@ def tac_from_labelmap(task: OrderedDict[str, Any], named_obj: dict[str, Any]) ->
 
     image_series = task['image_series']
     roi = task['roi']
-    t_name = task['t_name']
+    t_name = task['frame_start_name']
+    d_name = task['frame_duration_name']
     tac_name = task['tac_name']
-    named_obj[t_name], named_obj[tac_name] = animo.extract_tac_from_01labelmap(
+    named_obj[t_name], named_obj[d_name], named_obj[tac_name] = animo.extract_tac_from_01labelmap(
         named_obj[image_series], named_obj[roi])
     print("")
 
